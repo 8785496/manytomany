@@ -11,7 +11,10 @@ namespace ManyToMany.Context
     {
         public MyContext() : base() { }
 
-        public MyContext(String connectString) : base(connectString) { }
+        public MyContext(String connectString) : base(connectString)
+        {
+            Database.SetInitializer(new CreateDatabaseIfNotExists<MyContext>());
+        }
 
         public DbSet<Skill> Skills { get; set; }
 

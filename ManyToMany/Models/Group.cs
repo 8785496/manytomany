@@ -14,6 +14,6 @@ namespace ManyToMany.Models
         public int Id { get; set; }
         public string GroupName { get; set; }
         [JsonIgnore]
-        public ICollection<Skill> Skills { get; set; }
+        public virtual ICollection<Skill> Skills { get; set; }
     }
 }

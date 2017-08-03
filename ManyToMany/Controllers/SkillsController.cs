@@ -13,28 +13,40 @@ namespace ManyToMany.Controllers
     {
         public IEnumerable<Skill> Get()
         {
-            using (var context = new MyContext())
+            using (var context = new MyContext("ManyToMany"))
             {
-                //var groups = new HashSet<Group> {
-                //        new Group { GroupName = "BackEnd" }
-                //};
-                //context.Skills.Add(new Skill
-                //{
-                //    SkillName = "C#",
-                //    Groups = groups
-                //});
+                try
+                {
+                    //var groups = new HashSet<Group> {
+                    //        new Group { GroupName = "BackEnd" }
+                    //};
+                    //context.Skills.Add(new Skill
+                    //{
+                    //    SkillName = "C#",
+                    //    Groups = groups
+                    //});
 
-                //context.SaveChanges();
+                    //context.SaveChanges();
 
-                IEnumerable<Skill> skills = context.Skills.ToList();
+                    var query = from skill in context.Skills.Include("Groups")
+                                select skill;
 
-                return skills;
+                    IEnumerable<Skill> skills = query.ToList();
+
+                    return skills;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+
             }
         }
 
         public Skill Get(int id)
         {
-            using (var context = new MyContext())
+            using (var context = new MyContext("ManyToMany"))
             {
                 var query = from skill in context.Skills.Include("Groups")
                             where skill.Id == id
@@ -46,7 +58,7 @@ namespace ManyToMany.Controllers
 
         public void Post([FromBody]Skill skill)
         {
-            using (var context = new MyContext())
+            using (var context = new MyContext("ManyToMany"))
             {
                 context.Skills.Add(skill);
                 context.SaveChanges();
@@ -55,7 +67,7 @@ namespace ManyToMany.Controllers
 
         public void Put(int id, [FromBody]Skill skill)
         {
-            using (var context = new MyContext())
+            using (var context = new MyContext("ManyToMany"))
             {
                 context.Skills.Add(skill);
                 // context.SaveChanges();
